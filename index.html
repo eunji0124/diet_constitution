@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>다이어트 체질 정밀 진단</title>
+<style>
+:root {
+    --color-text-primary: #1a1a1a;
+    --color-text-secondary: #4a4a4a;
+    --color-text-tertiary: #767676;
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f8f9fa;
+    --color-background-tertiary: #f1f3f5;
+    --color-border-primary: #ced4da;
+    --color-border-secondary: #e9ecef;
+    --color-border-tertiary: #f1f3f5;
+    --accent-pink: #FBEAF0;
+    --accent-pink-text: #72243E;
+    --border-radius-md: 12px;
+    --border-radius-lg: 16px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0; -webkit-tap-highlight-color:transparent;}
+body { background: #f4f4f4; }
+.app{max-width:560px;margin:0 auto;padding:1.5rem 1rem;font-family:'Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif; background: #fff; min-height: 100vh;}
+
+/* INTRO */
+.intro{text-align:center;padding:2rem .5rem}
+.intro-em{font-size:56px;margin-bottom:1.5rem;display:block}
+.intro-h{font-size:26px;font-weight:700;color:var(--color-text-primary);margin-bottom:.75rem;line-height:1.4}
+.intro-tagline{font-size:15px;color:var(--color-text-secondary);margin-bottom:2rem;line-height:1.7;max-width:400px;margin-left:auto;margin-right:auto}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:2rem}
+.chip{font-size:12px;padding:6px 12px;border-radius:20px;background:var(--color-background-secondary);border:.5px solid var(--color-border-secondary);color:var(--color-text-secondary)}
+.chip.pk{background:var(--accent-pink);border-color:#ED93B1;color:var(--accent-pink-text)}
+.irow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:2.5rem}
+.ibox{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem;text-align:center;border:1px solid var(--color-border-tertiary)}
+.inum{font-size:20px;font-weight:700;color:var(--color-text-primary);margin-bottom:.2rem}
+.idesc{font-size:11px;color:var(--color-text-tertiary);letter-spacing:-0.02em}
+.start-btn{width:100%; padding:1.2rem; border-radius:var(--border-radius-md);font-size:18px;font-weight:700;cursor:pointer;border:none;background:var(--color-text-primary);color:#fff;font-family:inherit;transition:opacity .15s;box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
+
+/* QUIZ */
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.back-btn{background:none;border:none;color:var(--color-text-tertiary);font-size:14px;cursor:pointer;display:flex;align-items:center;gap:4px;padding:4px}
+.q-pl{font-size:14px;font-weight:600;color:var(--color-text-tertiary)}
+.pt{height:6px;background:var(--color-background-secondary);border-radius:3px;margin-bottom:2rem;overflow:hidden}
+.pf{height:100%;background:var(--color-text-primary);border-radius:3px;transition:width .4s ease}
+.sh{padding-bottom:1rem;margin-bottom:1.5rem;border-bottom:1px solid var(--color-border-tertiary)}
+.stitle{font-size:15px;font-weight:600;color:var(--color-text-secondary)}
+.qcard{background:var(--color-background-primary);border:1px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1.75rem;margin-bottom:1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03);}
+.qem{font-size:32px;margin-bottom:1rem;display:block}
+.qtext{font-size:20px;font-weight:700;color:var(--color-text-primary);line-height:1.5;margin-bottom:1rem}
+.qhint{font-size:13px;color:var(--color-text-secondary);line-height:1.6;padding:.8rem 1rem;background:var(--color-background-tertiary);border-radius:var(--border-radius-md);border-left:3px solid var(--color-border-primary)}
+.scale-btns{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:2rem}
+.sbtn{padding:1.4rem 0;border-radius:var(--border-radius-md);border:1px solid var(--color-border-primary);background:#fff;font-family:inherit;cursor:pointer}
+.sbtn:active{background: var(--color-background-secondary); transform: scale(0.96);}
+.snum{font-size:19px;font-weight:700;color:var(--color-text-primary)}
+
+/* RESULT */
+.res-header{text-align:center;padding:1rem 0 2rem}
+.res-h{font-size:24px;font-weight:700;color:var(--color-text-primary);margin-bottom:0.5rem}
+.res-sub-t{font-size:14px;color:var(--color-text-tertiary)}
+.card{background:#fff; border:1px solid var(--color-border-secondary); border-radius:var(--border-radius-lg); padding:1.5rem; margin-bottom:1.25rem}
+.card-label{font-size:12px;font-weight:700;color:var(--color-text-tertiary);letter-spacing:.05em;margin-bottom:1.2rem;display:block}
+
+/* Section-Specific */
+.alert-box { border-left: 5px solid #ff4d4d; background: #fff5f5; border-radius:var(--border-radius-md); padding:1.2rem; margin-bottom:1.25rem}
+.alert-title { color: #d63031; font-weight: 700; font-size: 15px; margin-bottom: 0.4rem; display:flex; align-items:center; gap:5px;}
+.alert-text { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+
+.main-type-card { border: 2px solid var(--color-text-primary); background: #fff; }
+.type-badge { display:inline-block; padding:4px 10px; border-radius:4px; font-size:11px; font-weight:800; margin-bottom:8px; background: #eee;}
+.type-name-h { font-size:24px; font-weight:800; margin-bottom:4px; }
+.type-sub-h { color: var(--color-text-secondary); font-size:15px; margin-bottom:1.5rem; font-weight:500;}
+
+.comfort{padding:1.2rem;border-radius:var(--border-radius-md);margin-bottom:1.5rem;font-size:14px;line-height:1.7;font-weight:500}
+.dlabel{font-size:13px;font-weight:700;color:var(--color-text-primary);margin-bottom:0.5rem;display:flex;align-items:center;gap:6px}
+.dtext{font-size:14px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:1.2rem}
+
+.hormone-card { background: var(--accent-pink); border: 1px solid #ED93B1; }
+.hormone-title { color: var(--accent-pink-text); font-weight: 700; display:flex; align-items:center; gap:6px; margin-bottom:0.8rem}
+.hormone-text { font-size:13.5px; color: #8a4a5f; line-height:1.6; }
+
+.sitem{margin-bottom:1rem}
+.srow{display:flex;justify-content:space-between;margin-bottom:6px}
+.slabel{font-size:13px;font-weight:600}
+.strack{height:6px;background:var(--color-background-tertiary);border-radius:3px;overflow:hidden}
+.sbar{height:100%;border-radius:3px;transition:width 1s ease-out}
+
+.do-dont{display:grid;grid-template-columns:1fr;gap:15px;margin-top:1rem}
+.dd-box { background: var(--color-background-secondary); padding:1.2rem; border-radius:var(--border-radius-md); }
+.dd-title{font-size:14px;font-weight:700;margin-bottom:0.8rem}
+.dd-item{font-size:13px; margin-bottom:6px; list-style:none; display:flex; gap:6px; color:var(--color-text-secondary)}
+
+.cta-habit{font-size:17px;font-weight:700;padding:1.2rem;background:#fcfcfc;border:1px dashed var(--color-border-primary);border-radius:var(--border-radius-md);margin-top:0.5rem;text-align:center;line-height:1.5}
+.restart-btn{width:100%;padding:1rem;border-radius:var(--border-radius-md);font-size:15px;font-weight:600;cursor:pointer;border:1px solid var(--color-border-primary);background:#fff;margin-top:1.5rem;color:var(--color-text-tertiary)}
+
+.fa{animation:fu .4s ease both}
+@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+@media (min-width: 480px) { .do-dont { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="app">
+    <!-- INTRO -->
+    <div id="intro-screen">
+      <div class="intro">
+        <span class="intro-em">🌿</span>
+        <h3 class="intro-h">나의 다이어트 체질<br>정밀 자가 진단</h3>
+        <p class="intro-tagline">의지가 약한 게 아니라 <strong>호르몬 신호</strong>가 꼬인 것입니다.<br>내 대사 상태에 맞는 정답을 찾으세요.</p>
+        <div class="chips">
+          <span class="chip">코르티솔 체크</span><span class="chip">인슐린 감수성</span>
+          <span class="chip">대사 탄력성</span><span class="chip pk">🌸 호르몬 주기</span>
+        </div>
+        <div class="irow">
+          <div class="ibox"><div class="inum">25개</div><div class="idesc">정밀 문항</div></div>
+          <div class="ibox"><div class="inum">1:1</div><div class="idesc">맞춤 솔루션</div></div>
+        </div>
+        <button class="start-btn" onclick="startQ()">지금 진단 시작하기 →</button>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="quiz-screen" style="display:none"></div>
+
+    <!-- RESULT -->
+    <div id="result-screen" style="display:none"></div>
+</div>
+
+<script>
+const Qs=[
+  {sec:'신체 및 정신적 스트레스',secN:1,icon:'😰',text:'업무나 일상에서 정신적인 압박감이나 불안감을 자주 느끼는 편이다.',hint:'정신적 스트레스는 코르티솔을 높여 복부 지방 축적을 유도합니다.',cat:'c'},
+  {sec:null,secN:1,icon:'😮‍💨',text:'피로가 누적된 날, 유독 달콤하거나 짠 음식이 강하게 당긴다.',hint:'이는 의지력 문제가 아닌 생리적 보상 심리입니다.',cat:'c'},
+  {sec:null,secN:1,icon:'😴',text:'잠을 설친 다음 날에는 평소보다 식욕 조절이 훨씬 힘들다.',hint:'수면 부족은 식욕 억제 호르몬 렙틴의 기능을 떨어뜨립니다.',cat:'c'},
+  {sec:null,secN:1,icon:'😣',text:'스트레스를 받으면 소화가 안 되거나 배에 가스가 차는 느낌이 든다.',hint:'코르티솔은 자율신경을 교란해 장 운동을 방해합니다.',cat:'c'},
+  {sec:'체중 항상성 방어',secN:2,icon:'⚖️',text:'식사량을 줄여도 살이 빠지기보다 몸이 무기력해지는 느낌이 강하다.',hint:'몸이 현재 체중을 지키려는 방어 기제가 작동 중인 상태입니다.',cat:'h'},
+  {sec:null,secN:2,icon:'😵',text:'감량 중에 조금만 더 빼려 하면 어지러움 등 몸의 거부 반응이 온다.',hint:'몸이 기아 상태로 착각하여 대사를 낮추고 있습니다.',cat:'h'},
+  {sec:null,secN:2,icon:'📈',text:'예전의 최고 체중으로 몸이 자꾸 돌아가려는 성향이 있다고 느낀다.',hint:'Set-Point(기준 체중)가 높게 설정되어 있을 수 있습니다.',cat:'h'},
+  {sec:null,secN:2,icon:'🔄',text:'다이어트 후 일반식으로 돌아오면 예전보다 더 빨리 살이 찌는 편이다.',hint:'반복된 요요는 항상성 기제를 더 강화시킵니다.',cat:'h'},
+  {sec:'탄수화물 대사',secN:3,icon:'🍚',text:'면이나 빵을 먹고 나면 참을 수 없는 졸음이 쏟아지곤 한다.',hint:'혈당이 급격히 올랐다가 급락할 때 나타나는 신호입니다.',cat:'i'},
+  {sec:null,secN:3,icon:'🍬',text:'배가 부른데도 식후에 디저트나 단 음식을 꼭 먹어야 직성이 풀린다.',hint:'인슐린 반응이 불안정하면 뇌는 계속 허기를 느낍니다.',cat:'i'},
+  {sec:null,secN:3,icon:'🌸',text:'생리 전만 되면 탄수화물에 대한 갈망이 평소보다 몇 배는 심해진다.',hint:'황체기에는 혈당 조절력이 떨어져 단 것이 더 당깁니다.',cat:'i',hormone:true},
+  {sec:null,secN:3,icon:'🫄',text:'탄수화물을 많이 먹은 날은 유독 아랫배 팽만감이 심하다.',hint:'소화되지 못한 탄수화물이 장내 가스를 유발할 수 있습니다.',cat:'i'},
+  {sec:'순환 및 소화기',secN:4,icon:'💧',text:'오후만 되면 다리가 붓거나 신발이 꽉 끼는 느낌이 든다.',hint:'순환 저하로 인한 수분 정체 현상입니다.',cat:'lg',lsub:true},
+  {sec:null,secN:4,icon:'🌸',text:'생리 전후로 얼굴이나 몸의 부기가 육안으로 보일 만큼 심하다.',hint:'호르몬 변화로 인한 일시적인 수분 정체입니다.',cat:'lg',lsub:true,hormone:true},
+  {sec:null,secN:4,icon:'😣',text:'평소 소화력이 약해 식사 후에 늘 더부룩한 느낌이 있다.',hint:'소화 불량은 만성 염증을 유발해 대사를 방해합니다.',cat:'lg',gsub:true},
+  {sec:null,secN:4,icon:'🌡️',text:'아랫배가 항상 차갑고, 배꼽 주위로 살이 단단하게 찌는 편이다.',hint:'복부 순환이 정체되면 지방이 더 쉽게 축적됩니다.',cat:'lg',gsub:true},
+  {sec:'활동량 및 소비',secN:5,icon:'🛋️',text:'운동 시간을 제외하고는 하루 종일 거의 앉아서 생활한다.',hint:'일상 활동량(NEAT)이 부족하면 대사 엔진이 꺼집니다.',cat:'a'},
+  {sec:null,secN:5,icon:'💺',text:'평소 걷기보다는 차를 타거나 가급적 움직이지 않는 것을 선호한다.',hint:'작은 움직임의 부재가 기초대사량을 낮춥니다.',cat:'a'},
+  {sec:null,secN:5,icon:'🌸',text:'생리 기간에는 무기력함 때문에 활동량이 거의 제로에 가깝다.',hint:'주기적인 활동량 감소는 소비 효율을 떨어뜨립니다.',cat:'a',hormone:true},
+  {sec:null,secN:5,icon:'🚶‍♀️',text:'체중 관리를 할 때 운동보다는 식단에만 90% 이상 의존한다.',hint:'움직임 없는 식단은 근손실과 대사 저하를 부릅니다.',cat:'a'},
+  {sec:'대사 탄력성',secN:6,icon:'🔋',text:'과식 한 번 하면 예전 몸무게로 돌아오는데 3일 이상 걸린다.',hint:'대사 스위치가 느리게 작동하는 신호입니다.',cat:'m'},
+  {sec:null,secN:6,icon:'🏃‍♀️',text:'운동을 시작해도 몸이 데워지는 데 시간이 아주 오래 걸린다.',hint:'에너지 연소 효율이 낮아진 상태입니다.',cat:'m'},
+  {sec:null,secN:6,icon:'🔥',text:'운동을 해도 땀이 잘 나지 않거나 몸이 무겁게만 느껴진다.',hint:'대사 엔진이 비활성화된 상태일 수 있습니다.',cat:'m'},
+  {sec:null,secN:6,icon:'🤤',text:'식후 식곤증이 매우 심하고, 기운이 없어 자꾸 눕고 싶다.',hint:'세포가 에너지를 제대로 흡수하지 못하는 신호입니다.',cat:'m'},
+  {sec:null,secN:6,icon:'🤕',text:'조금만 활동해도 근육통이나 피로감이 며칠씩 지속된다.',hint:'회복 시스템이 느려 지방 연소력이 떨어진 상태입니다.',cat:'m'}
+];
+
+const T={
+  c:{name:'코르티솔 민감형',sub:'스트레스성 대사 저하', comfort:'당신은 지친 것입니다. 단것이 당긴 건 몸의 비명이었을지도 모릅니다.', color:'#5DCAA5', w1:'스트레스가 뇌를 비상사태로 착각하게 만들어 지방을 붙잡습니다.', w2:'고강도 운동보다 깊은 휴식이 살을 빼는 열쇠입니다.', do:['밤 11시 이전 취침','명상과 복식 호흡','오후 2시 후 카페인 제한'], dont:['격렬한 유산소 운동','고강도 간헐적 단식']},
+  h:{name:'항상성 방어형',sub:'에너지 보존 모드', comfort:'몸이 주인님을 지키기 위해 에너지를 아끼고 있습니다. 안심시켜야 빠집니다.', color:'#378ADD', w1:'적게 먹으면 몸은 더 적게 써서 정체기를 만듭니다.', w2:'체중을 뺄 대상이 아닌, "협상"의 대상으로 보아야 합니다.', do:['규칙적인 3끼 식사','주 3회 가벼운 근력 운동','100g 단위 점진적 감량'], dont:['1일 1식 등 초절식','급작스러운 운동량 폭발']},
+  i:{name:'인슐린 저항성형',sub:'탄수화물 대사 불균형', comfort:'참을 수 없는 식욕은 호르몬의 장난입니다. 혈당의 파도를 먼저 잠재우세요.', color:'#EF9F27', w1:'혈당이 널뛰며 들어오는 에너지를 즉시 지방으로 저장합니다.', w2:'인슐린 스위치를 꺼야 비로소 지방 연소가 시작됩니다.', do:['채소→단백질→탄수 순서 식사','식후 15분 산책','정제 탄수화물 줄이기'], dont:['공복에 과일/주스 마시기','식후 바로 눕기']},
+  lg:{name:'순환 및 소화 저체형',sub:'부종 및 장내 환경 저하', comfort:'현재 체중의 일부는 노폐물입니다. 길만 뚫어줘도 몸이 가벼워집니다.', color:'#5DCAA5', w1:'림프 정체와 약한 소화력이 지방 대사를 가로막고 있습니다.', w2:'비우는 법을 배우면 채워진 살들이 자연스럽게 빠집니다.', do:['미지근한 물 자주 마시기','복부 따뜻하게 유지','림프 마사지'], dont:['짠 음식과 야식','장시간 가만히 앉아있기']},
+  a:{name:'활동량 저하형',sub:'에너지 소비 지연', comfort:'운동장 갈 필요 없습니다. 일상의 작은 틈새가 지방을 태우는 화력입니다.', color:'#7F77DD', w1:'기본 칼로리 소모가 낮아 식단을 조금만 풀어도 살이 찝니다.', w2:'몸을 "항상 움직이는 기계"처럼 인지시켜야 합니다.', do:['계단 이용하기','스탠딩 책상 활용','식후 10분 걷기'], dont:['눕기 위주의 휴식','주말에 몰아 운동하기']}
+};
+
+let curQ=0, sc={c:0,h:0,i:0,lg:0,a:0,m:0,l_sub:0,g_sub:0,hormone:0}, history=[];
+
+function startQ(){
+    document.getElementById('intro-screen').style.display='none';
+    document.getElementById('quiz-screen').style.display='block';
+    renderQ();
+}
+
+function renderQ(){
+  const q=Qs[curQ], pct=Math.round(curQ/Qs.length*100);
+  let secHtml = q.sec ? `<div class="sh"><div class="stitle">Step ${q.secN}: ${q.sec}</div></div>` : '';
+  
+  document.getElementById('quiz-screen').innerHTML=`<div class="fa">
+    <div class="nav-row">
+      <button class="back-btn" onclick="goBack()" ${curQ===0?'style="visibility:hidden"':''}>← 이전</button>
+      <span class="q-pl">질문 ${curQ+1} / ${Qs.length}</span>
+    </div>
+    <div class="pt"><div class="pf" style="width:${pct}%"></div></div>
+    ${secHtml}
+    <div class="qcard">
+      <span class="qem">${q.icon}</span>
+      <div class="qtext">${q.text}</div>
+      <div class="qhint">${q.hint}</div>
+    </div>
+    <div class="scale-btns">
+      ${[1,2,3,4,5].map(n=>`<button class="sbtn" onclick="ans(${n})"><span class="snum">${n}</span></button>`).join('')}
+    </div>
+    <div style="text-align:center; margin-top:1.5rem; color:#aaa; font-size:12px;">전혀 아니다 → 매우 그렇다</div>
+  </div>`;
+  window.scrollTo(0,0);
+}
+
+function ans(v){
+  const q=Qs[curQ];
+  const scores = {c:0,h:0,i:0,lg:0,a:0,m:0,l_sub:0,g_sub:0,hormone:0};
+  scores[q.cat]=v;
+  if(q.hormone) scores.hormone=v;
+  if(q.lsub) scores.l_sub=v;
+  if(q.gsub) scores.g_sub=v;
+
+  history.push({ ...scores });
+  for(let key in scores) sc[key] += scores[key];
+
+  curQ++;
+  if(curQ<Qs.length) renderQ(); else showResult();
+}
+
+function goBack(){
+    if(curQ > 0){
+        curQ--;
+        const lastScore = history.pop();
+        for(let key in lastScore) sc[key] -= lastScore[key];
+        renderQ();
+    }
+}
+
+function showResult(){
+  document.getElementById('quiz-screen').style.display='none';
+  const rs=document.getElementById('result-screen');rs.style.display='block';
+  
+  const pcts={}; 
+  ['c','h','i','lg','a','m'].forEach(k=>{ pcts[k]=Math.min(Math.round(sc[k]/catMax[k]*100),100); });
+  
+  const best = ['c','h','i','lg','a'].sort((a,b)=>pcts[b]-pcts[a])[0];
+  const Tb = T[best];
+  const hasHormone = sc.hormone >= 8;
+  const mFlexHigh = pcts.m >= 70;
+
+  rs.innerHTML=`<div class="fa">
+    <div class="res-header">
+      <div class="res-h">분석 결과 리포트</div>
+      <div class="res-sub-t">내 몸이 보내는 대사 신호를 정리했습니다.</div>
+    </div>
+
+    <div class="card"><div class="card-label">신체 대사 밸런스</div>${makeRadar(Object.values(pcts))}</div>
+
+    ${mFlexHigh?`<div class="alert-box">
+      <div class="alert-title">⚠️ 대사 스위치 비활성화 경고</div>
+      <p class="alert-text">현재 대사 탄력성이 매우 낮아진 상태입니다. 무작정 굶기보다 <strong>비타민 B군과 미온수</strong>로 대사 엔진을 먼저 예열하는 단계가 필수입니다.</p>
+    </div>`:''}
+
+    <div class="card main-type-card">
+      <div class="type-badge" style="color:${Tb.color}">${best==='c'?'STRESS':'METABOLIC'} TYPE</div>
+      <div class="type-name-h">${Tb.name}</div>
+      <div class="type-sub-h">${Tb.sub}</div>
+      <div class="comfort" style="background:${Tb.color}15; color:${Tb.color}">${Tb.comfort}</div>
+      
+      <div class="dlabel">🔍 핵심 원인</div><div class="dtext">${Tb.w1}</div>
+      <div class="dlabel">💡 다이어트 전략</div><div class="dtext">${Tb.w2}</div>
+
+      <div class="do-dont">
+        <div class="dd-box"><div class="dd-title" style="color:#2ecc71">✅ 시도하세요</div>
+          ${Tb.do.map(d=>`<li class="dd-item"><span>•</span> ${d}</li>`).join('')}
+        </div>
+        <div class="dd-box"><div class="dd-title" style="color:#e74c3c">❌ 피하세요</div>
+          ${Tb.dont.map(d=>`<li class="dd-item"><span>•</span> ${d}</li>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    ${hasHormone?`<div class="card hormone-card">
+      <div class="hormone-title">🌸 호르몬(생리주기) 민감도 높음</div>
+      <div class="hormone-text">생리 전 1~2주(황체기)에 대사가 가장 불안정해지는 타입입니다. 이 시기에는 감량보다 <strong>'유지'</strong>에 집중하고, 단 음식이 당길 땐 다크 초콜릿이나 견과류로 대체하는 요령이 필요합니다.</div>
+    </div>`:''}
+
+    <div class="card">
+        <div class="card-label">영역별 세부 수치</div>
+        ${['c','h','i','lg','a','m'].map(k=>`
+            <div class="sitem">
+                <div class="srow"><span class="slabel">${catLabel[k]}</span><span class="spct">${pcts[k]}%</span></div>
+                <div class="strack"><div class="sbar" id="bar-${k}" style="background:${pcts[k]>70?'#ff4d4d':'#1a1a1a'}"></div></div>
+            </div>`).join('')}
+    </div>
+
+    <div class="card" style="text-align:center; background:#1a1a1a; color:#fff">
+        <div class="card-label" style="color:#aaa">📌 성공을 위한 한 가지 습관</div>
+        <div class="cta-habit" style="color:#1a1a1a">
+            ${best==='i'?'식사할 때 채소부터 한 입 먹기':best==='c'?'밤 11시 전에는 무조건 눕기':best==='h'?'매일 같은 시간에 식사하기':'식후 10분 제자리 걷기'}
+        </div>
+    </div>
+
+    <button class="restart-btn" onclick="location.reload()">↺ 다시 진단하기</button>
+  </div>`;
+
+  setTimeout(()=>{ 
+      for(let k in pcts) {
+          const el = document.getElementById('bar-'+k);
+          if(el) el.style.width = pcts[k]+'%';
+      }
+      animateRadar(Object.values(pcts)); 
+  },150);
+}
+
+const catMax={c:20,h:20,i:20,lg:20,a:20,m:25};
+const catLabel={c:'스트레스',h:'체중항상성',i:'인슐린',lg:'순환/소화',a:'활동량',m:'대사탄력'};
+
+function makeRadar(s6){
+  const cx=155,cy=140,r=80;
+  const angs=Array.from({length:6},(_,i)=>(i*60-90)*Math.PI/180);
+  let rings='';[.25,.5,.75,1].forEach(r2=>{const pts=angs.map(a=>`${cx+r*r2*Math.cos(a)},${cy+r*r2*Math.sin(a)}`).join(' ');rings+=`<polygon points="${pts}" fill="none" stroke="#eee" stroke-width="1"/>`;});
+  return `<svg viewBox="0 0 310 280" width="100%">${rings}<polygon id="rp" fill="rgba(26,26,26,0.1)" stroke="#1a1a1a" stroke-width="2"/></svg>`;
+}
+
+function animateRadar(s6){
+  const cx=155,cy=140,r=80;
+  const angs=Array.from({length:6},(_,i)=>(i*60-90)*Math.PI/180);
+  let t=0;
+  const tick=()=>{t=Math.min(t+.05,1);
+    const pts=s6.map((v,i)=>{const rt=(v/100)*t;return `${cx+r*rt*Math.cos(angs[i])},${cy+r*rt*Math.sin(angs[i])}`;}).join(' ');
+    document.getElementById('rp').setAttribute('points',pts);
+    if(t<1)requestAnimationFrame(tick);};requestAnimationFrame(tick);
+}
+</script>
+</body>
+</html>
