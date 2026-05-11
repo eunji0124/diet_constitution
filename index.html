@@ -221,8 +221,32 @@ function goBack(){
         renderQ();
     }
 }
-
 function showResult(){
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_W4_p37O9R_fF73S9S_f8S9S_f8S9S_f8/exec"; // 본인의 웹 앱 URL로 교체 필수!
+
+  // 현재 계산된 결과 데이터를 정리
+  const pctsForSheet = {}; 
+  ['c','h','i','lg','a','m'].forEach(k=>{ pctsForSheet[k]=Math.min(Math.round(sc[k]/catMax[k]*100),100); });
+  const bestTypeKey = ['c','h','i','lg','a'].sort((a,b)=>pctsForSheet[b]-pctsForSheet[a])[0];
+
+  const payload = {
+    type: T[bestTypeKey].name,
+    sc_c: pctsForSheet.c,
+    sc_h: pctsForSheet.h,
+    sc_i: pctsForSheet.i,
+    sc_lg: pctsForSheet.lg,
+    sc_a: pctsForSheet.a,
+    sc_m: pctsForSheet.m
+  };
+
+  // 구글 시트로 전송
+  fetch(GOOGLE_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(err => console.error("Data save error:", err));
+  
   document.getElementById('quiz-screen').style.display='none';
   const rs=document.getElementById('result-screen');rs.style.display='block';
   
