@@ -222,9 +222,8 @@ function goBack(){
     }
 }
 function showResult(){
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_W4_p37O9R_fF73S9S_f8S9S_f8S9S_f8/exec"; // 본인의 웹 앱 URL로 교체 필수!
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/u/0/home/projects/1O06SbTwHsaRzrY0yvVjluhNqKzKE-qv5qAo5By9qVvBFG0S-1wv7ZYw9/edit";
 
-  // 현재 계산된 결과 데이터를 정리
   const pctsForSheet = {}; 
   ['c','h','i','lg','a','m'].forEach(k=>{ pctsForSheet[k]=Math.min(Math.round(sc[k]/catMax[k]*100),100); });
   const bestTypeKey = ['c','h','i','lg','a'].sort((a,b)=>pctsForSheet[b]-pctsForSheet[a])[0];
@@ -246,7 +245,7 @@ function showResult(){
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   }).catch(err => console.error("Data save error:", err));
-  
+
   document.getElementById('quiz-screen').style.display='none';
   const rs=document.getElementById('result-screen');rs.style.display='block';
   
